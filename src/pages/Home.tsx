@@ -72,7 +72,7 @@ export default function Home() {
           </label>
           {!result && (
             <label className="button button-submit" onClick={onSubmit}>
-              <span className="button-inner">판독</span>
+              <span className="button-inner">판별</span>
             </label>
           )}
         </div>
