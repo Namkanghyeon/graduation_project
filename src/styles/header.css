@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
-  height: 32px;
+  align-items: flex-end;
+  height: 40px;
 }
 
 .logo {
