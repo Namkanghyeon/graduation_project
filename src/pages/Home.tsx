@@ -14,44 +14,32 @@ export default function Home() {
     if (!files) return;
     const file = files[0];
 
+    const url = 'https://7dcd-125-131-168-161.jp.ngrok.io/transfer/';
+    const fd = new FormData();
+    fd.append('pic', file);
+
+    (async () => {
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {},
+          body: fd
+        })
+        const json = await response.json()
+        setResult(json.result)
+      } catch (error) {
+        alert('API 호출 에러')
+      }
+    })()
+
     const reader = new FileReader();
-    reader.onloadend = (finishedEvent: ProgressEvent<FileReader>) => {
-      const target = finishedEvent.currentTarget as FileReader;
+    reader.onloadend = (event: ProgressEvent<FileReader>) => {
+      const target = event.target as FileReader;
       const result = target.result as string;
       setImageUrl(result);
       setResult('');
     };
     reader.readAsDataURL(file);
-  };
-
-  const onSubmit = (e: React.MouseEvent<HTMLLabelElement, MouseEvent>) => {
-    e.preventDefault();
-
-    const url = '';
-    const fd = new FormData();
-    console.log(imageUrl);
-    fd.append('file', imageUrl);
-    console.log(fd.values());
-
-    // (async () => {
-    //   try {
-    //     const response = await fetch(url, {
-    //       method: 'POST',
-    //       headers: {},
-    //       body: fd
-    //     })
-    //     setResult(response.data.result)
-    //   } catch (error) {
-    //     alert('API 호출 에러')
-    //   }
-    // })()
-
-    const demoResponse = {
-      data: {
-        result: 'available',
-      },
-    };
-    setResult(demoResponse.data.result);
   };
 
   return (
@@ -67,12 +55,9 @@ export default function Home() {
                 : '재활용 불가능합니다.'}
             </p>
           )}
-          <label className="button button-retry" htmlFor="attach-file">
-            <span className="button-inner">다시 선택</span>
-          </label>
-          {!result && (
-            <label className="button button-submit" onClick={onSubmit}>
-              <span className="button-inner">판별</span>
+          {result && (
+            <label className="button button-retry" htmlFor="attach-file">
+              <span className="button-inner">다시 선택</span>
             </label>
           )}
         </div>
